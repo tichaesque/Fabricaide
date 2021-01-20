@@ -16,7 +16,7 @@ import xml.dom.minidom as DOM
 
 from cairosvg import svg2png
 
-USE_3D = False
+USE_3D = True
 
 __MAT_DB_UI__ = 'FabricaideUI/data/matdb'
 __MAT_DB__ = 'mat-data.txt'
