@@ -24,7 +24,7 @@
 # See individual functions for more information.
 
 from cairosvg import svg2png, svg2pdf
-from RemoteLaserCutter.Client.remote_laser import RemoteLaserCutter
+# from RemoteLaserCutter.Client.remote_laser import RemoteLaserCutter
 
 import argparse
 import glob
@@ -268,17 +268,17 @@ def convert_to_png():
 #  jobfile: The filename of the job to process
 #  matname: The name of the material to cut the job from
 # Returns: OK
-@app.route('/lasercut', methods=['GET'])
-def lasercut():
-  global remoteLaser
-  jobfile = request.args.get('jobfile')
-  matname = request.args.get('matname')
-  print('Starting a new cutting job: {} ({})'.format(jobfile, matname))
-  preparedFile = fabricade_svgutils.prepareForCutting(jobfile)
-  remoteLaser = RemoteLaserCutter(args.laser_host)
-  assert remoteLaser.ping()
-  remoteLaser.cutJob(preparedFile, matname)
-  return 'OK'
+# @app.route('/lasercut', methods=['GET'])
+# def lasercut():
+#   global remoteLaser
+#   jobfile = request.args.get('jobfile')
+#   matname = request.args.get('matname')
+#   print('Starting a new cutting job: {} ({})'.format(jobfile, matname))
+#   preparedFile = fabricade_svgutils.prepareForCutting(jobfile)
+#   remoteLaser = RemoteLaserCutter(args.laser_host)
+#   assert remoteLaser.ping()
+#   remoteLaser.cutJob(preparedFile, matname)
+#   return 'OK'
 
 
 # Export the given SVG file as PDF files that can be laser cut
@@ -547,9 +547,9 @@ if __name__ == "__main__":
   args = argparser.parse_args()
 
   # Test if the laser cutter server is running
-  remoteLaser = RemoteLaserCutter(args.laser_host)
-  if remoteLaser.ping() is not True:
-    print('\033[31m  ** Warning: Laser cutter server is not reachable ** \033[0m')
+  # remoteLaser = RemoteLaserCutter(args.laser_host)
+  # if remoteLaser.ping() is not True:
+  #   print('\033[31m  ** Warning: Laser cutter server is not reachable ** \033[0m')
   
   # Run the flask application locally. This server should never serve to the outside world
   app.run(host='127.0.0.1', port=args.port)

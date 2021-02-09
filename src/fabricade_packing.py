@@ -16,7 +16,7 @@ import xml.dom.minidom as DOM
 
 from cairosvg import svg2png
 
-USE_3D = True
+USE_3D = False
 
 __MAT_DB_UI__ = 'FabricaideUI/data/matdb'
 __MAT_DB__ = 'mat-data.txt'
@@ -189,7 +189,7 @@ class PackingJob:
           print('[Packing] Running the packing algorithm on {}'.format(material))
           
           start = time.time()
-          self.packingresults[material], num_failed_fits = intellipack.pack_polygons_decreasing(svgsheetlist,shapestopack, offset=24, partial_solution=True, rotations=1)
+          self.packingresults[material], num_failed_fits = intellipack.pack_polygons_decreasing(svgsheetlist,shapestopack, offset=10, partial_solution=True, rotations=2)
           print('pack_polygons_decreasing: ' + str(time.time()-start))
 
           if num_failed_fits > 0:

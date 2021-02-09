@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
-boolean use3D = true;
+boolean use3D = false;
 boolean debug = false; 
 boolean processingfile = false;
 boolean paused = false;
