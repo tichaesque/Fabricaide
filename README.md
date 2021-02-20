@@ -31,7 +31,7 @@ If you want to use your own material database instead of the example one provide
 * Double-check that the document resolution is 72 PPI 
 * Refer to the graphic below for info on how this document should be structured:
 
-![matdbtutorial](matdbtutorial.png)
+![matdbtutorial](matdbtutorial.svg)
 
 ## Processing setup
 
