@@ -6,7 +6,7 @@ Source code for Fabricaide: Fabrication-Aware Design for 2D Cutting Machines.
 
 ### Acknowledgements 
 
-[Fabricaide](https://hcie.csail.mit.edu/) is a system that helps designers of laser-cut objects make material-conscious design decisions and make the most of their scrap material. If you use Fabricaide as part of your research, please cite it as follows
+[Fabricaide](https://hcie.csail.mit.edu/research/fabricaide/fabricaide.html) is a system that helps designers of laser-cut objects make material-conscious design decisions and make the most of their scrap material. If you use Fabricaide as part of your research, please cite it as follows
 
 > Fabricaide: Fabrication-Aware Design for 2D Cutting Machines.
 > Ticha Sethapakdi, Daniel Anderson, Adrian Reginald Chua Sy, Stefanie Mueller.
