@@ -15,19 +15,23 @@ Source code for Fabricaide: Fabrication-Aware Design for 2D Cutting Machines.
 ## Requirements
 
 * Mac OSX 10.6+ (may work  with older versions)
-* [Docker](https://www.docker.com/)
 * Adobe Illustrator
 * The latest version  of [Processing](https://processing.org/)
 
 
 ## Fabricaide backend setup
 
-* Install the [Packaide](https://github.com/DanielLiamAnderson/Packaide) backend
-	* If you have a zip copy of the docker image (`packaide.tar.gz`), run `docker load < packaide.tar.gz` to load the image.
-	* Alternatively, follow the instructions [here](https://github.com/HCIELab/FabricaideDocker) to build the image yourself.
-	* If you don't have access to Docker, install Packaide following instructions [here](https://github.com/DanielLiamAnderson/Packaide) then comment out line 7 and uncomment line 6 in `Fabricaide.command`.
+* Install [Packaide](https://github.com/DanielLiamAnderson/Packaide) and follow the instructions there
 * Initialize the sample material database by running `python3 initmatdb.py MatDB.svg`    
 
+## Creating your own material database
+
+If you want to use your own material database instead of the example one provided, you will need to modify `MatDB.svg`.
+* Open MatDB.svg in a vector-editing program (e.g. Illustrator) 
+* Double-check that the document resolution is 72 PPI 
+* Refer to the graphic below for info on how this document should be structured:
+
+![matdbtutorial](matdbtutorial.png)
 
 ## Processing setup
 
@@ -51,5 +55,13 @@ Once you have the Fabricaide swatch imported, you can now select it in the Swatc
 ## Using Fabricaide with Adobe Illustrator
 
 * Create a blank Adobe Illustrator document (use a resolution of 72 PPI and color mode of RGB)
-* Double-click the `Fabricaide.command` file (it is a Terminal shell script). If it is not double-clickable, try executing it with `./Fabricaide.command`. If you are not using Docker, run `Fabricaide-nodocker.command` instead.
-* Please refer to the [Fabricaide Reference Guide](https://docs.google.com/document/d/1dcog25s2pAyX-dLwB0EoQPB70EbVmCBMU2zszpl-_LE/edit?usp=sharing) for more details on how to use Fabricaide in Illustrator
+* Double-click the `Fabricaide.command` file (it is a Terminal shell script), or run `./Fabricaide.command` in Terminal
+* Please refer to the [Fabricaide Reference Guide](https://docs.google.com/document/d/1dcog25s2pAyX-dLwB0EoQPB70EbVmCBMU2zszpl-_LE/edit?usp=sharing) for more details on how to use Fabricaide with Illustrator
+
+<!--
+## Using Fabricaide with other programs
+
+Fabricaide works with any program that exports SVG; however, in some situations, you will have to make light modifications to the Fabricaide code. 
+-->
+
+
