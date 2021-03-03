@@ -3,11 +3,13 @@
 # Optimizes packing jobs by reusing the most recent packing for a particular
 # material if no modifications have been made to that material.
 
+import itertools
 import glob
-import intellipack
+import packaide
 import json
 import os
 import re
+import shapely.geometry
 import shutil
 import threading
 import time
@@ -129,13 +131,54 @@ class PackingJob:
         with open(os.path.join(PACKED_OUTPUT_DIR,packedfile) , 'r') as packedshapes:
           packedfiles.append((0, packedshapes.read()))
 
-    merged_sheets = intellipack.merge_sheets(svgsheetlist, packedfiles)
-    self.percentages[material] = intellipack.sheet_percentage(merged_sheets)
+    merged_sheets = self.merge_sheets(svgsheetlist, packedfiles)
+    self.percentages[material] = self.sheet_percentage(merged_sheets)
     return self.percentages[material]
   
   def reset_cache(self):
     self.materialcuts = {}
     self.materials = []
+
+  # Take the output of the packing, and the input sheets, and produce a sequence of
+  # documents that contains the original sheets with holes with the newly packed
+  # shapes placed onto them
+  def merge_sheets(self, svg_files, packing_output):
+    sheets = []
+    for i in range(len(svg_files)):
+      doc = DOM.parseString(svg_files[i])
+      if i < len(packing_output):
+        packed_shapes = DOM.parseString(packing_output[i][1])
+        svgElement = doc.getElementsByTagName('svg')[0]
+        for element in packed_shapes.getElementsByTagName('svg')[0].childNodes:
+          if element.nodeType != element.TEXT_NODE and (element.tagName == 'g' or element.tagName == 'path'):
+            svgElement.appendChild(element.cloneNode(deep=True))
+      sheets.append(doc)
+    return sheets
+
+  #SVG files should ideally be file names
+  def sheet_percentage(self, svg_files, offset = 20):
+    consumed_area = 0
+    total_area = 0
+    sheet_consumption= []
+    for svg_file in svg_files:
+      svg_string = svg_file.toxml()
+      height, width = packaide.get_sheet_dimensions(svg_string)
+      boundary = shapely.geometry.Polygon([(0,0),(width,0),(height,width),(0, height)])
+      total_area += boundary.area
+      elements, shapely_polygons = packaide.extract_shapely_polygons(svg_string, offset)
+      if len(shapely_polygons) > 0:
+        polygons, holes_list = zip(*shapely_polygons)
+        union = shapely.ops.unary_union(polygons)
+        holes = list(itertools.chain(*holes_list))
+        hole_union = shapely.ops.unary_union(holes)
+        unbounded_consume = union.difference(hole_union)
+        consumed = boundary.intersection(unbounded_consume)
+        consumed_area += consumed.area
+        sheet_consumption.append(consumed.area/ boundary.area)
+      else:
+        consumed_area += 0
+        sheet_consumption.append(0)
+    return [consumed_area/total_area] + sheet_consumption
 
   # Run the packing procedure for all materials. This should usually
   # be called from a new thread to avoid blocking the caller, since
@@ -189,17 +232,16 @@ class PackingJob:
           print('[Packing] Running the packing algorithm on {}'.format(material))
           
           start = time.time()
-          self.packingresults[material], num_failed_fits = intellipack.pack_polygons_decreasing(svgsheetlist,shapestopack, offset=10, partial_solution=True, rotations=2)
-          print('pack_polygons_decreasing: ' + str(time.time()-start))
+          self.packingresults[material], success_fits, num_failed_fits = packaide.pack(svgsheetlist, shapestopack.toxml(), tolerance=5, offset=10, partial_solution=True, rotations=2)
 
           if num_failed_fits > 0:
             self.failed_fits[material] = num_failed_fits
             self.insufficientmaterials.append(material)
 
           start = time.time()
-          merged_sheets = intellipack.merge_sheets(svgsheetlist, self.packingresults[material])
-          self.percentages[material] = intellipack.sheet_percentage(merged_sheets)
-          print('merge and percentages: ' + str(time.time()-start))
+          merged_sheets = self.merge_sheets(svgsheetlist, self.packingresults[material])
+          self.percentages[material] = self.sheet_percentage(merged_sheets)
+          
           # remove old packed files for this material
           old_packed_files = glob.glob(PACKED_OUTPUT_DIR + '/' + material+"*.svg")
           for old_file in old_packed_files:
@@ -215,7 +257,7 @@ class PackingJob:
             svg_output = os.path.join(PACKED_OUTPUT_DIR, '{}_{}.svg'.format(material, sheetid))
 
             with open(svg_output, 'w') as cutfile:
-              cutfile.write(shapes.toxml())
+              cutfile.write(shapes)
 
             # Generate PNG preview
             start = time.time()

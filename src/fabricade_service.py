@@ -543,7 +543,7 @@ def kill(pid):
 if __name__ == "__main__":
   argparser = argparse.ArgumentParser()
   argparser.add_argument('--laser-host', dest='laser_host', default='http://127.0.0.1:8000', help='Remote hostname of laser cutter')
-  argparser.add_argument('--port', dest='port', default=420, type=int, help='Port to serve the local service on')
+  argparser.add_argument('--port', dest='port', default=3000, type=int, help='Port to serve the local service on')
   args = argparser.parse_args()
 
   # Test if the laser cutter server is running

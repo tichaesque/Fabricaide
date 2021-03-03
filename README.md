@@ -14,8 +14,8 @@ Source code for Fabricaide: Fabrication-Aware Design for 2D Cutting Machines.
 
 ## Requirements
 
-* Mac OSX 10.6+ (may work  with older versions)
-* Adobe Illustrator
+* Mac OSX 10.6+ (may work  with older versions) **or** Windows
+* Adobe Illustrator (if you are using the non-2020 version of Illustrator, you will have to modify `path` in FabricaideUI to point to the correct location)
 * The latest version  of [Processing](https://processing.org/)
 
 
@@ -55,13 +55,11 @@ Once you have the Fabricaide swatch imported, you can now select it in the Swatc
 ## Using Fabricaide with Adobe Illustrator
 
 * Create a blank Adobe Illustrator document (use a resolution of 72 PPI and color mode of RGB)
-* Double-click the `Fabricaide.command` file (it is a Terminal shell script), or run `./Fabricaide.command` in Terminal
+* **(Mac)** Double-click the `Fabricaide.command` file (it is a Terminal shell script), or run `./Fabricaide.command` in Terminal\
+    **(Windows)** Run `Fabricaide.bat` 
 * Please refer to the [Fabricaide Reference Guide](https://docs.google.com/document/d/1dcog25s2pAyX-dLwB0EoQPB70EbVmCBMU2zszpl-_LE/edit?usp=sharing) for more details on how to use Fabricaide with Illustrator
 
-<!--
 ## Using Fabricaide with other programs
 
-Fabricaide works with any program that exports SVG; however, in some situations, you will have to make light modifications to the Fabricaide code. 
--->
-
+Fabricaide should work with any program that exports SVG; however, in some situations, you will have to make light modifications to the Fabricaide code. More details forthcoming. 
 

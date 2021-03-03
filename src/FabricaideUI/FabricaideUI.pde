@@ -84,6 +84,42 @@ float UIpanelY;
 
 float packingstart = 0f;
 
+String illustratorPath;
+
+// For now, we assume that Illustrator is version 2020 and installed in the
+// default location. If not, these paths will have to be modified.
+String getIllustratorExecutable() {
+  final String OS = platformNames[platform];
+  String path = "";
+  if ("macosx".equals(OS)) {
+    path = "/Applications/Adobe Illustrator 2020/Adobe Illustrator.app";
+  }
+  else {
+    // If not Mac, assume Windows since Illustrator doesn't support Linux
+    path = "C:\\Program Files\\Adobe\\Adobe Illustrator 2020\\Support Files\\Contents\\Windows\\Illustrator.exe";
+  }
+  
+  // If the default path is no good, the user should help us find Illustrator
+  File f = new File(path);
+  if (!f.exists()) {
+    println("Could not find Illustrator in the default location. You will have to modify the Illustrator path in FabricaideUI.pde");
+    exit();
+    return null;
+  }
+  else {
+    return path; 
+  }
+}
+
+void locateIllustrator(File selection) {
+  if  (selection == null) {
+    illustratorPath = null; 
+  }
+  else {
+    illustratorPath = selection.getAbsolutePath(); 
+  }
+}
+
 void setup() {
 
   size(250, 500);
@@ -94,7 +130,8 @@ void setup() {
 
   UIpanelY = height-50;
 
-  illustrator = new AdobeIllustratorInteraction("/Applications/Adobe Illustrator 2020/Adobe Illustrator.app");
+  // Find and set up interaction with Adobe Illustrator
+  illustrator = new AdobeIllustratorInteraction(getIllustratorExecutable());
 
   fabricaidedocpath = dataPath("../../fabricaidedoc.svg");
   editedpackingdocpath = dataPath("../../editedpacking.svg");
