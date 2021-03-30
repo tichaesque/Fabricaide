@@ -126,7 +126,7 @@ void setup() {
   surface.setAlwaysOnTop(true);
   pixelDensity(displayDensity());
   smooth();
-  surface.setSize(250, int(0.65*displayHeight));
+  surface.setSize(250, int(0.95*displayHeight));
 
   UIpanelY = height-50;
 
