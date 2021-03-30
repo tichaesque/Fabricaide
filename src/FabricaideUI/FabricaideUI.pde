@@ -126,7 +126,7 @@ void setup() {
   surface.setAlwaysOnTop(true);
   pixelDensity(displayDensity());
   smooth();
-  surface.setSize(250, int(0.95*displayHeight));
+  surface.setSize(250, int(0.65*displayHeight));
 
   UIpanelY = height-50;
 
@@ -237,8 +237,8 @@ public void makeHomeButtons() {
     .setColorForeground(color(252, 186, 3))
     ;
 
-  lasercutbutton = cp5.addButton("lasercut")
-    .setLabel("cut")
+  lasercutbutton = cp5.addButton("maxcopies")
+    .setLabel("max")
     .setFont(font)
     .setPosition(exportbutton.getPosition()[0] + exportbutton.getWidth() + 10, height-40)
     .setSize(40, 30)
@@ -334,6 +334,22 @@ public void lasercut(int theValue) {
   databasebutton.remove();
 
   joblist.layout();
+}
+
+public void maxcopies(int theValue) {
+  JSONObject response = loadJSONObject("http://127.0.0.1:3000/maxcopies?svgfile=cacheddoc.svg");
+  int max_copies = response.getInt("maxcopies");
+
+  print("Max copies is " + max_copies);
+
+  if (max_copies > 0) {
+    // Update the copies field to show the maximum number of copies
+    copies = max_copies;
+    toggles.get(Textfield.class, "copies").setText(str(copies));
+    cacheddoc = null;  // Force a repacking
+    
+    surface.setTitle("Fabricaide ["+max_copies+" COPIES]");
+  }
 }
 
 public void nextsheet(int theValue) {
