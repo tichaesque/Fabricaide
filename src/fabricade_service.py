@@ -64,18 +64,27 @@ UPLOAD_FORM = """
   <form class="addmaterial" action="/register" name="registerform-MATNAME" id="registerform-MATNAME" method="post" enctype="multipart/form-data">
     <div id="loader-button" class="upload-btn-wrapper">
       <button class="add-material">
-        <span>+</span> 
+        <span>+ upload sheet</span> 
       </button>
       <input type="file" name="newsheet-MATNAME" id="newsheet-MATNAME" />
       <input type="hidden" name="matname" value="MATNAME" />
+
     </div>
   </form>
+
+<form class="addmaterial" action="/addblank" method="get">
+  <button class="add-material add-blank" >
+        <span>+ add blank sheet</span> 
+      </button>
+      <input type="hidden" name="matname" value="MATNAME" />
+      </form>
   
   <script type="text/javascript">
     $( document ).ready(function() {
       $("#newsheet-MATNAME").change(function(e) {
         $('#registerform-MATNAME').submit();  
       });
+
     });
   </script>
 
@@ -451,6 +460,25 @@ def get_similar_materials():
 def sheetphoto():
   
   return send_file('sheetphoto.jpg', mimetype='image/jpeg')
+
+# Add a blank sheet
+@app.route('/addblank', methods=['GET','POST'])
+def add_blank_sheet():
+  with open(MAT_DB, 'r') as file:
+    materialsdb = json.load(file)
+
+  newmatname = request.args.get('matname')
+  viewbox = materialsdb['materialinfo'][newmatname]['viewBox']
+  _, _, width, height = map(int, viewbox.split(' '))
+  svgstring = '<svg xmlns="http://www.w3.org/2000/svg" width="{}" height="{}" viewBox="{}"></svg>'.format(width, height, viewbox)
+
+  
+  materialsdb['materialsheets'][newmatname].append(svgstring) 
+
+  with open(MAT_DB, 'w') as outfile:
+    json.dump(materialsdb, outfile)
+
+  return redirect(url_for('serve_mat_db'))
 
 # Upload a new material
 @app.route('/register', methods=['GET','POST'])

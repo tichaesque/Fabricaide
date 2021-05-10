@@ -86,13 +86,16 @@ h2 {
 .add-material {
   background-color: #69cf6d;
   border-radius: 10px;
-  width: 32px;
   text-align:center;
   vertical-align: middle;
   color: #fff;
   font-weight: bold;
   font-size: 18pt;
   border: none;
+}
+
+.add-blank {
+  margin-bottom: 16pt;
 }
 
 .upload-button {
