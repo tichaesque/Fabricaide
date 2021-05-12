@@ -10,7 +10,7 @@ Source code for Fabricaide: Fabrication-Aware Design for 2D Cutting Machines.
 
 > Fabricaide: Fabrication-Aware Design for 2D Cutting Machines.
 > Ticha Sethapakdi, Daniel Anderson, Adrian Reginald Chua Sy, Stefanie Mueller.
-> To Appear in The Proceedings of the 2021 ACM CHI Conference on Human Factors in Computing Systems, 2021
+> In Proceedings of the 2021 ACM CHI Conference on Human Factors in Computing Systems, 2021
 
 ## Requirements
 
